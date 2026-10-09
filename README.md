@@ -4,7 +4,9 @@
 
 ## 运行
 
-直接双击 `dist/index.html` 即可运行。入口已使用非模块化浏览器脚本，避免 Chrome/Edge 对 `file://` 下 ES Module 导入的拦截。也可在项目根目录运行任意静态服务器，例如：
+公网运行地址：[https://shirleyvale.github.io/ap1-fractal/](https://shirleyvale.github.io/ap1-fractal/)
+
+直接双击 `dist/index.html` 也可运行。入口已使用非模块化浏览器脚本，避免 Chrome/Edge 对 `file://` 下 ES Module 导入的拦截。也可在项目根目录运行任意静态服务器，例如：
 
 ```bash
 npx serve dist
