@@ -5,8 +5,24 @@ export const TRIANGLE = [vec2(-0.86, -0.74), vec2(0, 0.82), vec2(0.86, -0.74)];
 export function chaosGame(vertices, count, ratio = 0.5) {
   const out = new Float32Array(count * 2);
   let p = vec2((Math.random() - .5) * .2, (Math.random() - .5) * .2);
+  let lastVertex = -1;
+  const chooseVertex = () => {
+    let index;
+    do {
+      index = Math.floor(Math.random() * vertices.length);
+      // For the extension polygons, avoiding adjacent vertices exposes a
+      // recognisable polygon gasket instead of a nearly filled shape.
+    } while (vertices.length > 3 && lastVertex >= 0 &&
+      (index === lastVertex || (index - lastVertex + vertices.length) % vertices.length === 1 ||
+       (lastVertex - index + vertices.length) % vertices.length === 1));
+    lastVertex = index;
+    return vertices[index];
+  };
+  // Burn-in: discard the transient points before the orbit reaches the gasket.
+  // Otherwise a few random dots may remain inside the holes after every refresh.
+  for (let i = 0; i < 20; i++) p = mix(p, chooseVertex(), ratio);
   for (let i = 0; i < count; i++) {
-    p = mix(p, vertices[Math.floor(Math.random() * vertices.length)], ratio);
+    p = mix(p, chooseVertex(), ratio);
     out[i * 2] = p[0]; out[i * 2 + 1] = p[1];
   }
   return out;
